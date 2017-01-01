@@ -13,16 +13,15 @@ from django.conf import settings
 class Command(BaseCommand):
     help = 'Dump database into a file. Only MySQL and PostgreSQL engines are supported.'
 
-    option_list = BaseCommand.option_list + (
-        make_option('--destination', dest='backup_directory', default='backups', help='Destination (path) where to place database dump file.'),
-        make_option('--filename', dest='filename',  default=False, help='Name of the file, or - for stdout'),
-        make_option('--db-name', dest='database_name', default='default', help='Name of database (as defined in settings.DATABASES[]) to dump.'),
-        make_option('--compress', dest='compression_command', help='Optional command to run (e.g., gzip) to compress output file.'),
-        make_option('--quiet', dest='quiet', action='store_true', default=False, help='Be silent.'),
-        make_option('--debug', dest='debug', action='store_true', default=False, help='Show commands that are being executed.'),
-        make_option('--pgpass', dest='pgpass', action='store_true', default=False, help='Use the ~/.pgdump file for password instead of prompting (PostgreSQL only).'),
-        make_option('--raw-args', dest='raw_args', default='', help='Argument(s) to pass to database dump command as is'),
-    )
+    def add_arguments(self, parser):
+        parser.add_argument('--destination', dest='backup_directory', default='backups', help='Destination (path) where to place database dump file.'),
+        parser.add_argument('--filename', dest='filename',  default=False, help='Name of the file, or - for stdout'),
+        parser.add_argument('--db-name', dest='database_name', default='default', help='Name of database (as defined in settings.DATABASES[]) to dump.'),
+        parser.add_argument('--compress', dest='compression_command', help='Optional command to run (e.g., gzip) to compress output file.'),
+        parser.add_argument('--quiet', dest='quiet', action='store_true', default=False, help='Be silent.'),
+        parser.add_argument('--debug', dest='debug', action='store_true', default=False, help='Show commands that are being executed.'),
+        parser.add_argument('--pgpass', dest='pgpass', action='store_true', default=False, help='Use the ~/.pgdump file for password instead of prompting (PostgreSQL only).'),
+        parser.add_argument('--raw-args', dest='raw_args', default='', help='Argument(s) to pass to database dump command as is'),
 
     OUTPUT_STDOUT = object()
 
